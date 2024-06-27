@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+<div style = "text-align:center">
+  <h4 align = "center"><b>PROT-ON: Structure-based detection of designer mutations in PROTein-protein interface mutatiONs</b></h4>
+</div>
+<div style="text-align:justify">
+  <p style=font-size:15px;font-family:Helvetica;text-align:justify>The identification of critical amino acids for redesigning the structurally characterized protein-protein interfaces paves the way for developing protein-based therapeutics to dealing with diverse range of diseases. To find such amino acids positions, the residues across the protein interaction surfaces are either randomly or strategically mutated. Scanning mutations in this manner is experimentally costly. Therefore, computational methods have been developed to estimate the impact of an interfacial mutation on protein-protein interactions. In this work, we present the <b>PROT-ON</b> tool that scans all possible interfacial mutations by using EvoEF1 (active in both on the web server and stand-alone versions) or FoldX (active only in the stand-alone version) with the aim of finding the most mutable positions.
+</div>
+<br>
+<br>
+<div id="download" class="tab-pane fade in active">
+  <label style = "text-align:center font-size:15px;font-family:Helvetica;text-align:justify">For the standalone version of PROT-ON:</label>
+  <br>
+  <div class=col-md-4>
+    <a href="https://github.com/CSB-KaracaLab/prot-on" target="_blank" class="btn btn-primary" style = "margin:0 auto; display:block;">Go to GitHub</a>
+  </div>
+</div>
+<br>
+<br>
+<div id="paper" class="tab-pane fade in active">
+  <label style = "text-align:center font-size:15px;font-family:Helvetica;text-align:justify">For more or to cite us, please refer to the PROT-ON paper:
+  </label>
+  <br>
+  <div class=col-md-4>
+    <a href="https://www.frontiersin.org/articles/10.3389/fmolb.2023.1063971/" target="_blank" class="btn btn-primary" style = "margin:0 auto; display:block;">PROT-ON Paper</a>
+  </div>
+</div>
+{% endblock  %}

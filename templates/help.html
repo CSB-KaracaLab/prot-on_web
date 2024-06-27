@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block body %}
+<p style="text-align:justify">The only requirement to run PROT-ON is a PDB file, containing a dimeric interface. You can supply your complex either by entering its PDB id or by directly uploading its coordinates. As PROT-ON allows the submission of complexes that have more than two chains, we ask the user to define the dimeric complex to be considered. We also ask the chain to be mutated, as PROT-ON can handle one chain at a time. In the current version, PROT-ON accepts only PDB-formatted files. If you would like to apply an evolutionary filter on your results, you can supply a PSSM file, which you can create via <a href="https://possum.erc.monash.edu/server.jsp">https://possum.erc.monash.edu/server.jsp</a></p>
+<br>
+<p style="text-align:justify"> After submitting your run, you will be able to retrieve its results within 5-10 minutes. Your run link will be accessible for a week. After that, your run results will be deleted. On the results page of each run, we provide the intermediary and final result files in a gzipped format. To go over the explanation of each file, please see <a href="https://github.com/CSB-KaracaLab/prot-on#prot-on-output-files">https://github.com/CSB-KaracaLab/prot-on#prot-on-output-files</a></p>   
+<br>
+<p style="text-align:justify"> If you have any questions, please direct them to us via our Feedback Form. Alternatively, you can reach us ezgi.karaca@ibg.edu.tr</p>    
+<br>
+<p style="text-align:justify">Thank you for using our server!</p>
+{% endblock  %}

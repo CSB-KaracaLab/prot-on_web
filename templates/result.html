@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>PROT-ON</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+  <link rel='stylesheet prefetch' href='https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/rwd.table.min.css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+<br>
+<div class="container">
+<header>
+<style>
+header
+{
+    background-color: #181717;
+    border-radius: 6px 6px 6px 6px;
+}
+
+.row {
+    margin:0px auto;
+    border-radius: 7px 7px 7px 7px;
+}
+.heatmap{
+    width:600px;
+}
+.BP{
+    width:400px:
+}
+.table-bordered {
+  border: 1px solid #ddd !important;
+}
+
+table caption {
+	padding: .5em 0;
+}
+
+@media screen and (max-width: 767px) {
+  table caption {
+    display: none;
+  }
+}
+</style> 
+<div id="logo">
+    <p align = "center"><a href="/"><img src="/static/proton-logo_web.png" style="max-width:100%;height:auto;"></a></p>
+</div>    
+</header>
+{% include "includes/navbar.html" %}
+<div class="container">
+  {% include "includes/messages.html" %}
+  <label >Your run has been succesfully completed.</label>
+  <p style="text-align:justify"><b>{{pdb}}</b> protein structure has <b>{{NumInterfacialAA}}</b> interfacial amino acids within <b>{{cut_off}}</b> Å cut-off distance. After the interfacial mutation scanning step, <b>{{NumInterfacialAA * 19}}</b> possible mutations were built. As the result of box-whisker statistics, <B>{{num_out}}</B> outliers were detected within a <b>{{iqr}}xIQR</b> whisker threshold. Among them <B>{{NumEnr}}</B> most enriching and <B>{{NumDep}}</B> most Depleting Mutations are proposed as designer mutations.</p>
+  {% if NumDep > 0 %}
+    <p style="text-align:justify">The most Depleting Mutation is <b>{{TMD}}</b> with <b>{{max_DM}}</b> ΔΔG score.</p>
+  {% else %}
+  {% endif %}
+  {% if NumEnr > 0 %}
+    <p style="text-align:justify">The most enriching mutation is <b>{{TME}}</b> with <b>{{min_EM}}</b> ΔΔG score.</p>
+  {% else %}
+  {% endif %}
+    <p style="text-align:justify"> The residue that is most frequently leading to a binding depleting is <B>{{TMPosition_DM}}.</B></p>
+    <p style="text-align:justify"> The residue that is most frequently leading to a binding enriching is <B>{{TMPosition_EM}}.</B></p>
+  <P style="text-align:justify">Your run will be stored for 7 days on our server. You can download your run results as a gzipped format <a href="{{ url_for('download_run', run_id=run_id) }}" target="_blank">here</a>.</P>
+  <P style="text-align:justify">For citing our work and to check the definitions of IQR etc.:</P>
+    <ul>
+      <li style="text-align:justify">Koşaca M, Yılmazbilek İ and Karaca E (2023) <a href="https://www.frontiersin.org/articles/10.3389/fmolb.2023.1063971/" target="_blank">PROT-ON: A structure-based detection of designer PROTein interface MutatiONs</a> Front. Mol. Biosci. 10:1063971. doi: 10.3389/fmolb.2023.1063971</li>
+    </ul>
+  <hr>
+
+        <div class="row">
+            <div class = col-md-6>
+            <div id='heatmap' class = "heatmap"></div>
+            </div>
+            <div class = col-md-6 style=padding-left:95px;top:12px;>
+            <div id='BP' class = 'BP'></div>
+            </div>
+        </div>
+        <div class = col-md-3>
+        </div>
+        <div class = col-md-6>
+            <div id='PSBP' class='PSBP'>
+        </div>
+        </div>
+        <div class = col-md-3>
+        </div>
+</div>
+</div>
+    <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="table-responsive" data-pattern="priority-columns">
+        
+          <table class="table table-bordered table-hover">
+          {% if col == 9 %}
+          <caption class="text-center">Final List of Proposed Designer Mutations</caption>
+          {% else %}
+           <caption class="text-center">Final List of Proposed Designer Mutations</caption>
+          {% endif %}
+            
+            <thead>
+              <tr>
+                <th data-priority="1">Position</th>
+                <th data-priority="2">Mutation</th>
+                <th data-priority="3">ΔΔG Protein Stability Score</th>
+                <th data-priority="4">Mutation Impact on Protein Folding</th>
+                <th data-priority="5">ΔΔG Binding Affinity Score</th>
+                <th data-priority="6">Mutation Impact on Protein Binding</th>
+                {% if col == 9 %}
+                <th data-priority="5">ΔΔG PSSM Score</th>
+                {% else %}
+                {% endif %}
+              </tr>
+            </thead>
+            </tr>
+            {% if col == 9 %}
+            {% for i in range(len_DM) %}
+            <tr>
+                <td>{{DM_List[i][0]}}</td>
+                <td>{{DM_List[i][1]}}</td>
+                <td>{{DM_List[i][5]}}</td>
+                <td>
+                  {% if DM_List[i][5] < 0 %}
+                  Positive
+                  {% elif DM_List[i][5] > 0 %}
+                  Negative 
+                  {% endif %}
+                </td>
+                <td>{{DM_List[i][4]}}</td>
+                <td>
+                  {% if DM_List[i][4] < 0 %}
+                  Positive
+                  {% elif DM_List[i][4] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+                <td>{{DM_List[i][8]}}</td>
+              {% endfor %}
+            </tr>
+            {% for i in range(len_EM) %}
+            <tr>
+                <td>{{EM_List[i][0]}}</td>
+                <td>{{EM_List[i][1]}}</td>
+                <td>{{EM_List[i][5]}}</td>
+                <td>
+                  {% if EM_List[i][5] < 0 %}
+                  Positive
+                  {% elif EM_List[i][5] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+                <td>{{EM_List[i][4]}}</td>
+                <td>
+                  {% if EM_List[i][4] < 0 %}
+                  Positive
+                  {% elif EM_List[i][4] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+                <td>{{EM_List[i][8]}}</td>
+              {% endfor %}
+            </tr>
+            {% else %}
+            {% for i in range(len_DM) %}
+            <tr>
+                <td>{{DM_List[i][0]}}</td>
+                <td>{{DM_List[i][1]}}</td>
+                <td>{{DM_List[i][7]}}</td>
+                <td>
+                  {% if DM_List[i][7] < 0 %}
+                  Positive
+                  {% elif DM_List[i][7] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+                <td>{{DM_List[i][6]}}</td>
+                <td>
+                  {% if DM_List[i][6] < 0 %}
+                  Positive
+                  {% elif DM_List[i][6] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+              {% endfor %}
+            </tr>
+            {% for i in range(len_EM) %}
+            <tr>
+                <td>{{EM_List[i][0]}}</td>
+                <td>{{EM_List[i][1]}}</td>
+                <td>{{EM_List[i][7]}}</td>
+                <td>
+                  {% if EM_List[i][7] < 0 %}
+                  Positive
+                  {% elif EM_List[i][7] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+                <td>{{EM_List[i][6]}}</td>
+                <td>
+                  {% if EM_List[i][6] < 0 %}
+                  Positive
+                  {% elif EM_List[i][6] > 0 %}
+                  Negative
+                  {% endif %}
+                </td>
+
+              {% endfor %}
+            </tr>
+            {% endif %}
+            <tfoot>
+              <tr>
+                <td colspan="5" class="text-center"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div><!--end of .table-responsive-->
+      </div>
+    </div>
+  </div>
+<br>
+<br>
+{% include "includes/footer.html" %}
+<br>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js'></script>
+<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/rwd-table-patterns.js'></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type='text/javascript'>
+    var graphs = {{graphJSON | safe}};
+    Plotly.plot('heatmap',graphs,{});
+    var graphs = {{boxplotJSON | safe}};
+    Plotly.plot('BP',graphs,{});
+    var graphs = {{PositionSpecificBPJSON | safe}};
+    Plotly.plot('PSBP',graphs,{});
+</script>
+<script>
+</script>
+</body>
+</html>

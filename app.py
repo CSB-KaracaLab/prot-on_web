@@ -154,10 +154,11 @@ def proton(chain_1,chain_2,selected_chain,cut_off,iqr,algorithm,protein_structur
     os.chdir("../")
     shutil.move(UPLOAD_FOLDER + "{}_chain_{}_{}_output".format(pdb,selected_chain,algorithm), run_id)
     shutil.move(UPLOAD_FOLDER + run_id, "run_results")
-    os.system("chown prot-on:prot-on run_results/{}/{}_chain_{}_{}_output".format(run_id,pdb,selected_chain,algorithm))
-    os.system("chown prot-on:prot-on run_results/{}/{}_chain_{}_{}_output/mutation_models/*".format(run_id,pdb,selected_chain,algorithm))
-    os.system("chown prot-on:prot-on run_results/{}".format(run_id))
-    os.system("chown prot-on:prot-on run_results/{}/{}_chain_{}_{}_output/*".format(run_id,pdb,selected_chain,algorithm))
+    id = os.system("whoami")
+    os.system("chown {}:{} run_results/{}/{}_chain_{}_{}_output".format(id,id,run_id,pdb,selected_chain,algorithm))
+    os.system("chown {}:{} run_results/{}/{}_chain_{}_{}_output/mutation_models/*".format(id,id,run_id,pdb,selected_chain,algorithm))
+    os.system("chown {}:{} run_results/{}".format(id,id,run_id))
+    os.system("chown {}:{} run_results/{}/{}_chain_{}_{}_output/*".format(id,id,run_id,pdb,selected_chain,algorithm))
     SendMail(email,name,run_id)
 
 def SendMail(email,name,run_id):

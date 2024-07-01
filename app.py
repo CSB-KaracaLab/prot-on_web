@@ -50,8 +50,8 @@ flask_app.config.update(
     MAIL_SERVER = "smtp-relay.gmail.com", #Fill with your mail server
     MAIL_PORT = 587, #Type your mail port. Please contact with your mail server.
     MAIL_USE_TLS = True,
-    MAIL_USERNAME = "Fill with your e-mail here", #Fill with your e-mail here
-    MAIL_DEFAULT_SENDER = "Fill with your e-mail here", #Fill with your e-mail here
+    MAIL_USERNAME = "proton.tools@ibg.edu.tr", #Fill with your e-mail here
+    MAIL_DEFAULT_SENDER = "proton.tools@ibg.edu.tr", #Fill with your e-mail here
     worker_concurrency = 1, #How many jobs will be run at the same time?
     beat_schedule = {
         # Executes every night
@@ -162,7 +162,7 @@ def proton(chain_1,chain_2,selected_chain,cut_off,iqr,algorithm,protein_structur
     SendMail(email,name,run_id)
 
 def SendMail(email,name,run_id):
-    msg = Message("PROT-ON Run Results", sender = "Fill with your e-mail here", recipients=[email]) #Fill with your e-mail here
+    msg = Message("PROT-ON Run Results", sender = "proton.tools@ibg.edu.tr", recipients=[email]) #Fill with your e-mail here
     msg.body = ("""
     Thank you for using PROT-ON. Your {} run is now complete. You can access run results at http://proton.tools.ibg.edu.tr:8001/result/{}. Your result will be accessible for a week.
     """.format(name,run_id))
@@ -176,10 +176,10 @@ def feedback():
     if request.method == "POST":
         email = request.form.get("email_feedback")
         name = request.form.get("feedback_name")
-        send_email = "Fill with your e-mail here" #Fill with your e-mail here
+        send_email = "proton.tools@ibg.edu.tr" #Fill with your e-mail here
         message = request.form.get("message")
         subject = request.form.get("subject")
-        msg = Message(subject, sender = "Fill with your e-mail here", recipients=[send_email]) #Fill with your e-mail here
+        msg = Message(subject, sender = "proton.tools@ibg.edu.tr", recipients=[send_email]) #Fill with your e-mail here
         msg.body = """WE HAVE RECEIVED A FEEDBACK!
          Sender Name: {} 
          Sender Email: {}

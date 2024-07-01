@@ -34,12 +34,12 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 4. **Task Queue**: Using [RabbitMQ](https://www.rabbitmq.com/tutorials/tutorial-one-python) and [Celery](https://docs.celeryq.dev/en/stable/) for managing background tasks.
 5. **Server**: Deploying the webserver with [Nginx](https://nginx.org/en/docs/), supervisor and gunicorn.
 
-<p align="left">
-<img align="center" src="static/workflow.png" width = "300" />
+<p align="center">
+<img align="center" src="static/workflow.png" width = "400" />
 </p>
 
-<p align="right">
-<img align="center" src="static/server.jpg" width = "300" />
+<p align="center">
+<img align="center" src="static/server.jpg" width = "400" />
 </p>
 
 ### Usage
@@ -74,7 +74,7 @@ git clone https://github.com/mehdikosaca/prot-on_web.git
 cd prot-on
 ```
 
-Before the install dependencies, you must fill the e-mail blanket in the app.py script. Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail. Also if it needed, you should change `MAIL_PORT`.
+Before the install dependencies, you can change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`.
 
 #### EvoEF1 and FoldX Installation
 
@@ -184,7 +184,7 @@ sudo service nginx restart
 
 #### To Run the PROT-ON Webserver
 
-Now, your PROT-ON application successfully deployed and can accessible by typing DNS name or IP address on your browser. As a last step you must open two terminal tab on PROT-ON working directory, and run following commands to initate background and scheduled tasks, respectively. Note that, if any change or bugs in the scripts, please rerun the followings.
+Now, your PROT-ON application successfully deployed and can accessible by typing DNS name or IP address on your browser. As a last step you must open two terminal tabs on PROT-ON working directory, and run following commands to initate background and scheduled tasks, respectively. Note that, if any change or bugs occured in the scripts, please rerun the followings.
 
 ```
 sudo celery -A app.celery worker --loglevel==info
@@ -215,6 +215,26 @@ sudo celery -A app.celery beat --loglevel == info
 
 ### For Future Updates
 
+This section includes valuable information for future updates of PROT-ON codes. If you want to update anythings, please follow below instructions.
+
+* **To define a new alert:** First, define your alert code as a function in `alert.py`, then call it in the "Check" function in the `app.py` script. ([See for more information](https://flask.palletsprojects.com/en/1.1.x/patterns/flashing/)) 
+
+* **To add a new analyzing method:** If you want to add a new analysis method to PROT-ON, you must first create an object-oriented script to analyze the input structure, similar to __energy_calculation_EvoEF1.py__. Then, import it into `app.py`. Finally, call it in the `proton` function.
+
+* **To define a new celery task:** If you want to define a new Celery task, you need to follow a few steps. First, define the task in the Flask configuration section in the `app.py` script. Next, create a new task function. Before the function, add the __@celery_task__ decorator. Finally, create a script such as **task.py**, import it into **app.py** and call it wherever you need ([See for more information](https://docs.celeryq.dev/en/main/userguide/tasks.html))
+
+* **To edit the e-mail address or e-mail content:** E-mail configuration settings are present in the `app.py`script. To change the e-mail address press `command/ctrl + f`, type `Fill with your e-mail here`, and edit all with your e-mail. If needed please change the **MAIL_SERVER, MAIL_PORT, and MAIL_USE_TLS** settings. If you want to change mail content, please edit `SendMail` function in the app.py. 
+
+* **To edit mandatory run results:** If you want to edit mandatory run results, you can add or drop folders in the **periodic_task** function in **app.py** script.
+
+* **To edit result page:** You can manipulate the `ResultPage` function in the *app.py* and `result.html` script to change the result page template. 
+
+* **To edit homepage** You can manipulate the `index.html` script to change the homepage template. Additionally, you can edit the `result` function in the `app.py` script if any changes occur in the index form.
+
+* **To edit statistical methods:** You can directly manipulate the `detect_outliers.py` script if any edits are necessary in the statistical analysis methods.
+
+* **Other HTML pages:** `Layouts.html` file serves as a layout page and is inherited by many other HTML pages. The `pre_calculated_runs.html` file includes information about pre-calculated runs. The files`404.html, about.html, help.html, refresh.html` are static pages. These pages are returned for specific purposes: **404.html** for page not found errors, **about.html** for information about algorithm, **help.html** for some usage instructions, and **refresh.html** for waiting the results. There are also some html pages under *includes* folder. The **footer.html** is used for the footer section of pages, the **messages.html** is used for flash messaging, and the **navbar.html** is used for accessing the navigation menu.
+
 ### Citation
 
 If you use the PROT-ON, please cite the following paper:
@@ -225,7 +245,10 @@ Frontiers in Molecular Biosciences, 10, 1063971.
 ```
 
 ### Bug Report & Feedback
+
 If you encounter any problem, you can contact Mehdi or Ezgi via:
+
 ### Contacts
+
 * ezgi.karaca@ibg.edu.tr
 * mehdi.kosaca@ibg.edu.tr

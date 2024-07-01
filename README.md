@@ -47,7 +47,7 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 #### System dependencies
 
 * python3 OR conda (version 4.10 or higher)
-* Linux or Mac operating system
+* Linux (not for MacOS or Windows)
 * [FoldX 4.0](http://foldxsuite.crg.eu/) (optional)
 * RabbitMQ
 * Nginx
@@ -80,6 +80,7 @@ Before the install dependencies, you can change the e-mail address to which the 
 
 `library` and `src` folders are necessary to obtain EvoEF executable file. Please do not change or delete any files in those folders. Firstly, run the following command to create EvoEF executable file.
 
+for Linux:
 ```
 g++ -O3 --fast-math -o EvoEF src/*.cpp
 ```
@@ -100,6 +101,7 @@ pip install -r requirements.txt
 
 RabbitMQ is a message broker application used to manage background tasks in the PROT-ON webserver. To download and install RabbitMQ, run the following command
 
+To install:
 ```
 sudo apt-get install rabbitmq-server
 ```
@@ -111,6 +113,7 @@ sudo rabbitmq-server -detached
 
 Now, you should configure the RabbitMQ server settings to create a new user on host server and set permissions.
 
+for Linux
 ```
 sudo rabbitmqctl add_user <username> <password>
 sudo rabbitmqctl add_vhost <hostname>
@@ -154,8 +157,13 @@ sudo service supervisor restart
 ```
 sudo supervisorctl status
 ```
-Now, a server block must be established for PROT-ON application
 
+To install nginx in linux:
+```
+sudo apt-get install nginx
+```
+
+Now, a server block must be established for PROT-ON application
 ```
 sudo vim /etc/nginx/conf.d/prot-on.conf
 ```

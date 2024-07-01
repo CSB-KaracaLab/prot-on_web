@@ -71,7 +71,7 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 git clone https://github.com/mehdikosaca/prot-on_web.git
 ```
 ```
-cd prot-on
+cd prot-on_web
 ```
 
 Before the install dependencies, you can change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`.

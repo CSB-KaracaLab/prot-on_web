@@ -125,7 +125,7 @@ sudo rabbitmqctl set_permissions -p <hostname> <username> ".*" ".*" ".*"
 Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve PROT-ON's Flask app.
 
 ```
-gunicorn app:app -b localhost:8000 &
+gunicorn app:flask_app -b localhost:8000 &
 ```
 You can configure the Gunicorn process to listen on any open port.
 Running Gunicorn in the background will work fine for your purposes here. However, a better approach would be to run Gunicorn through Supervisor.

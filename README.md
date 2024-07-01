@@ -137,7 +137,6 @@ For MacOS users follow [this](https://www.ge.com/digital/documentation/proficy-p
 #### Deployment of the Server with Nginx
 
 Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve PROT-ON's Flask app.
-
 ```
 gunicorn app:flask_app -b localhost:8000 &
 ```
@@ -180,6 +179,7 @@ Create a configuration file with:
 sudo nano /opt/homebrew/etc/proton.conf
 ```
 Then, type following into the file. Please firstly, create supervisord and prot-on folders into `/var/log/` 
+```
 [supervisord]
 logfile=/var/log/supervisord.log
 pidfile=/var/run/supervisord.pid

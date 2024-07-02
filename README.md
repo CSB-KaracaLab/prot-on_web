@@ -147,7 +147,7 @@ Supervisor allows you to monitor and control multiple processes on UNIX-like ope
 
 To install supervisor for Linux:
 ```
-sudo apt-get supervisor
+sudo apt-get install supervisor
 ```
 for MacOS:
 ```
@@ -255,6 +255,13 @@ sudo nginx -s reload (for restart on MacOS)
 ```
 
 #### To Run the PROT-ON Webserver
+
+Before running the PROT-ON application, you must create an environment file named .env for Celery configuration. This file should include user information for the RabbitMQ server, as shown below.
+```
+CELERY_BROKER_URL=amqp://<username>:<password>@localhost/<hostname>
+CELERY_BACKEND_URL=db+sqlite:///proton.db
+SECRET_KEY="YOUR_SECRET_KEY"
+```
 
 Now, your PROT-ON application successfully deployed and can accessible by typing DNS name or IP address on your browser. As a last step you must open two terminal tabs on PROT-ON working directory, and run following commands to initate background and scheduled tasks, respectively. Note that, if any change or bugs occured in the scripts, please rerun the followings.
 

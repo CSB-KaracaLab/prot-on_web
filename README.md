@@ -235,6 +235,8 @@ sudo celery -A app.celery worker --loglevel==info
 sudo celery -A app.celery beat --loglevel == info
 ```
 
+**If you encounter an internal error when you submit a run, you must reboot your system and run below commands again.**
+
 ### PROT-ON Output Files
 
 * **Interface amino acid list:** Interfacial amino acid list (within a defined cut-off), belonging to the input chain ID, calculated by interface_residues.py. The same script outputs the pairwise contacts, as a Pairwise distance list.

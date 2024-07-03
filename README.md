@@ -213,7 +213,7 @@ sudo -H pip3 install flask
 sudo -H pip3 install python-dotenv
 sudo -H pip3 install plotly
 sudo -H pip3 install flask-mail
-sudo -H pip3 install sqlalcehmy
+sudo -H pip3 install sqlalchemy
 sudo -H pip3 install kaleido
 sudo -H pip3 install numpy
 ```

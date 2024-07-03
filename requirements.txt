@@ -1,4 +1,5 @@
 flask
+celery
 plotly
 python-dotenv
 SQLAlchemy

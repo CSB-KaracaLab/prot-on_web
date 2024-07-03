@@ -123,7 +123,7 @@ sudo rabbitmqctl set_permissions -p <hostname> <username> ".*" ".*" ".*"
 
 #### Deployment of the Server with Nginx
 
-Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve PROT-ON's Flask app.
+Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve PROT-ON's Flask app (PROT-ON listen 8001th port as a default).
 ```
 gunicorn app:flask_app -b localhost:8000 &
 ```
@@ -135,7 +135,7 @@ To install supervisor:
 ```
 sudo apt-get install supervisor
 ```
-Then, create a Supervisor configuration file (like proton.conf) at `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory.
+Then, create a Supervisor configuration file (like proton.conf) at `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory (PROT-ON listen 8001th port as a default).
 
 ```
 [program:prot-on]
@@ -173,7 +173,7 @@ Now, a server block must be established for the PROT-ON application
 sudo nano /etc/nginx/conf.d/prot-on.conf
 ```
 
-Then, paste the following configuration
+Then, paste the following configuration (PROT-ON listen 8001th port as a default)
 
 ```
 server {

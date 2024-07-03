@@ -29,7 +29,8 @@ def make_celery(app):
     celery = Celery(
         app.import_name,
         backend=app.config["CELERY_BACKEND_URL"],
-        broker=app.config["CELERY_BROKER_URL"]
+        broker=app.config["CELERY_BROKER_URL"],
+        broker_connection_retry_on_startup = True
     )
     celery.conf.update(app.config)
     

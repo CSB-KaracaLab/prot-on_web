@@ -55,17 +55,17 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 * Celery
 
 ### Python dependencies (also listed in requirements.txt)
-* flask
-* celery
-* plotly
-* python-dotenv
+* Flask
+* Celery
+* Plotly
+* Python-dotenv
 * SQLAlchemy
-* request
-* pandas
-* numpy
-* kaleido
-* flask-mail
-* gunicorn
+* Request
+* Pandas
+* Numpy
+* Kaleido
+* Flask-mail
+* Gunicorn
 
 #### Clone Repository
 
@@ -76,7 +76,7 @@ git clone https://github.com/mehdikosaca/prot-on_web.git
 cd prot-on_web
 ```
 
-Before the install dependencies, you must change returning result address by editing the all `proton.tools.ibg.edu.tr:8001`sections in the `app.py` with your domain ID or IP. You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
+Before the install dependencies, you must change returning result address by editing the all `proton.tools.ibg.edu.tr:8001`sections in the `app.py` with your domain or IP. You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
 
 #### EvoEF1 and FoldX Installation
 
@@ -103,19 +103,18 @@ pip install -r requirements.txt
 
 RabbitMQ is a message broker application used to manage background tasks in the PROT-ON webserver. To download and install RabbitMQ, run the following command
 
-To install RabbitMQ for Linux:
+To install RabbitMQ:
 ```
 sudo apt-get install rabbitmq-server
 ```
 
-To initate it for Linux:
+To initate it:
 ```
 sudo rabbitmq-server -detached
 ```
 
 Now, you should configure the RabbitMQ server settings to create a new user on host server and set permissions.
 
-for Linux
 ```
 sudo rabbitmqctl add_user <username> <password>
 sudo rabbitmqctl add_vhost <hostname>
@@ -128,8 +127,7 @@ Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve 
 ```
 gunicorn app:flask_app -b localhost:8000 &
 ```
-You can configure the Gunicorn process to listen on any open port (You can terminate the terminal after this step.).
-Running Gunicorn in the background will work fine for your purposes here. However, a better approach would be to run Gunicorn through Supervisor.
+You can configure the Gunicorn process to listen on any open port (You can terminate the terminal after this step). Running Gunicorn in the background will work fine for your purposes here. However, a better approach would be to run Gunicorn through Supervisor.
 
 Supervisor allows you to monitor and control multiple processes on UNIX-like operating systems. It will oversee the Gunicorn process, ensuring it restarts if something goes wrong or starts at boot time.
 
@@ -137,7 +135,7 @@ To install supervisor:
 ```
 sudo apt-get install supervisor
 ```
-Then, create a Supervisor configuration file (like proton.conf) in `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory.
+Then, create a Supervisor configuration file (like proton.conf) at `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory.
 
 ```
 [program:prot-on]
@@ -156,7 +154,7 @@ sudo supervisorctl reread
 sudo service supervisor restart
 ```
 
-**If you change/update anything on the server files/scripts, you must rerun below commands.** You can check the status of all monitored apps, use the following command
+**If you change/update anything on the server files/scripts, you must rerun below commands.** 
 
 ```
 sudo service supervisor restart
@@ -169,7 +167,7 @@ To install:
 sudo apt-get install nginx
 ```
 
-Now, a server block must be established for PROT-ON application
+Now, a server block must be established for the PROT-ON application
 
 ```
 sudo nano /etc/nginx/conf.d/prot-on.conf
@@ -188,18 +186,17 @@ server {
 }
 ```
 
-You must change `your_public_domain_here_or_ip_address;` with your domain name or IP address (you can check your local IP address via *ifconfig* command)
+You must change `your_public_domain_here_or_ip_address;` with your domain or IP address (you can check your local IP address via *ifconfig* command)
 
 The proxy pass directive should match the port on which the Gunicorn process is listening.
 
 Restart the nginx web server.
-
 ```
 sudo nginx -t
 sudo service nginx restart
 ```
 
-To check whether you deployed the PROT-ON successfully or not, please type the domain name or IP address on your browser.
+To check whether you deployed the PROT-ON successfully or not, please type your server name (the domain name or IP address) on your browser.
 
 ## Installation of Celery
 
@@ -208,7 +205,7 @@ Celery is a distributed task queue framework. It is used for handling asynchrono
 ```
 sudo apt-get install celery
 ```
-Celery need to root access to run. In that case the Python dependencies of PROT-ON need to be installed with elevated privileges, so please ensure to use sudo -H when downloading and installing them.
+Celery need to root access to run. In that case the Python dependencies of PROT-ON need to be installed with elevated privileges, so please ensure to use `sudo -H` parameter when downloading and installing them.
 
 ```
 sudo -H pip3 install pandas
@@ -224,14 +221,14 @@ You can start to use Celery in PROT-ON directory, after these installations.
 
 #### To Run the PROT-ON Webserver
 
-Before running the PROT-ON application, you must create an environment file named .env for Celery configuration. This file should include user information for the RabbitMQ server, as shown below.
+Before running the PROT-ON application, you must create an environment file named .env for Celery configuration. This file should includes user information for the RabbitMQ server, as shown below.
 ```
 CELERY_BROKER_URL=amqp://<username>:<password>@localhost/<hostname>
 CELERY_BACKEND_URL=db+sqlite:///proton.db
 SECRET_KEY="YOUR_SECRET_KEY"
 ```
 
-Now, your PROT-ON application successfully deployed and can accessible by typing DNS name or IP address on your browser. As a last step you must open two terminal tabs on PROT-ON working directory, and run following commands to initate background and scheduled tasks, respectively. Note that, if any change or bugs occured in the scripts, please rerun the followings.
+The last step, you must open two terminal tabs on PROT-ON working directory, and run following commands to initate background and scheduled tasks (You must run these commands at out of the environment), respectively. Note that, if any change or bugs occured in the scripts, please rerun them together with supervisor command below.
 
 ```
 sudo celery -A app.celery worker --loglevel==info
@@ -268,11 +265,11 @@ This section includes valuable information for future updates of PROT-ON codes. 
 
 * **To add a new analyzing method:** If you want to add a new analysis method to PROT-ON, you must first create an object-oriented script to analyze the input structure, similar to __energy_calculation_EvoEF1.py__. Then, import it into `app.py`. Finally, call it in the `proton` function.
 
-* **To define a new celery task:** If you want to define a new Celery task, you need to follow a few steps. First, define the task in the Flask configuration section in the `app.py` script. Next, create a new task function. Before the function, add the __@celery_task__ decorator. Finally, create a script such as **task.py**, import it into **app.py** and call it wherever you need ([See for more information](https://docs.celeryq.dev/en/main/userguide/tasks.html))
+* **To define a new celery task:** If you want to define a new Celery task, you need to follow a few steps. First, define a task in the Flask configuration section in the `app.py` script. Next, create a new task function. Before the function, add the __@celery_task__ decorator. Finally, create a script such as **task.py**, import it into **app.py** and call it wherever you need ([See for more information](https://docs.celeryq.dev/en/main/userguide/tasks.html))
 
-* **To edit the e-mail address or e-mail content:** E-mail configuration settings are present in the `app.py`script. To change the e-mail address press `command/ctrl + f`, type `Fill with your e-mail here`, and edit all with your e-mail. If needed please change the **MAIL_SERVER, MAIL_PORT, and MAIL_USE_TLS** settings. If you want to change mail content, please edit `SendMail` function in the app.py. 
+* **To edit the e-mail address or e-mail content:** E-mail configuration settings are present in the `app.py`script. To change the e-mail address press `command/ctrl + f`, type `Fill with your e-mail here`, and edit all with your e-mail. If needed please change the **MAIL_SERVER, MAIL_PORT, and MAIL_USE_TLS** settings. If you want to change mail content, please edit `SendMail` function in the `app.py`. 
 
-* **To edit mandatory run results:** If you want to edit mandatory run results, you can add or drop folders in the **periodic_task** function in **app.py** script.
+* **To edit pre-calculated run results:** If you want to edit pre-calculated run results, you can add or drop folders in the **periodic_task** function in **app.py** script.
 
 * **To edit result page:** You can manipulate the `ResultPage` function in the *app.py* and `result.html` script to change the result page template. 
 

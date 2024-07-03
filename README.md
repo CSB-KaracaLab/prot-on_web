@@ -52,10 +52,10 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 * RabbitMQ
 * Nginx
 * Supervisor
+* Celery
 
 ### Python dependencies (also listed in requirements.txt)
 * flask
-* celery
 * plotly
 * python-dotenv
 * SQLAlchemy
@@ -75,7 +75,7 @@ git clone https://github.com/mehdikosaca/prot-on_web.git
 cd prot-on_web
 ```
 
-Before the install dependencies, you can change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`.
+Before the install dependencies, you must change returning result address by editing the all `proton.tools.ibg.edu.tr:8001`sections in the `app.py` with your domain ID or IP. You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
 
 #### EvoEF1 and FoldX Installation
 
@@ -127,7 +127,7 @@ Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve 
 ```
 gunicorn app:flask_app -b localhost:8000 &
 ```
-You can configure the Gunicorn process to listen on any open port.
+You can configure the Gunicorn process to listen on any open port (You can terminate the terminal after this step.).
 Running Gunicorn in the background will work fine for your purposes here. However, a better approach would be to run Gunicorn through Supervisor.
 
 Supervisor allows you to monitor and control multiple processes on UNIX-like operating systems. It will oversee the Gunicorn process, ensuring it restarts if something goes wrong or starts at boot time.
@@ -196,6 +196,27 @@ Restart the nginx web server.
 sudo nginx -t
 sudo service nginx restart
 ```
+
+## Installation of Celery
+
+Celery is a distributed task queue framework. It is used for handling asynchronous or scheduled tasks. It allows you to run and manage background jobs. Use the following command to install Celery (**You have to deactivate the environment to install and use the Celery**)
+
+```
+sudo apt-get install celery
+```
+Celery need to root access to run. In that case the Python dependencies of PROT-ON need to be installed with elevated privileges, so please ensure to use sudo -H when downloading and installing them.
+
+```
+sudo -H pip3 install pandas
+sudo -H pip3 install flask
+sudo -H pip3 install python-dotenv
+sudo -H pip3 install plotly
+sudo -H pip3 install flask-mail
+sudo -H pip3 install sqlalcehmy
+sudo -H pip3 install kaleido
+sudo -H pip3 install numpy
+```
+You can start to use Celery in PROT-ON directory, after these installations.
 
 #### To Run the PROT-ON Webserver
 

@@ -30,7 +30,7 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 
 1. **Frontend**: HTML, CSS, and JavaScript, Bootstrap for the user interface.
 2. **Backend**: Python scripts and [Flask](https://flask.palletsprojects.com/en/3.0.x/) for handling requests and running the mutation analysis.
-3. **Database**: Storing user data and results with SQLAlchemy.
+3. **Database**: Storing result data with SQLAlchemy.
 4. **Task Queue**: Using [RabbitMQ](https://www.rabbitmq.com/tutorials/tutorial-one-python) and [Celery](https://docs.celeryq.dev/en/stable/) for managing background tasks.
 5. **Server**: Deploying the webserver with [Nginx](https://nginx.org/en/docs/), supervisor and gunicorn.
 

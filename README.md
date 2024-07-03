@@ -136,8 +136,7 @@ To install supervisor:
 ```
 sudo apt-get install supervisor
 ```
-
-Then, create a Supervisor configuration file in `/etc/supervisor/conf.d/` and configure it according to your requirements.
+Then, create a Supervisor configuration file in `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory.
 
 ```
 [program:prot-on]

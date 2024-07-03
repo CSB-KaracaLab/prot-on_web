@@ -47,7 +47,7 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 #### System dependencies
 
 * python3 OR conda (version 4.10 or higher)
-* Linux or MacOS
+* Linux
 * [FoldX 4.0](http://foldxsuite.crg.eu/) (optional)
 * RabbitMQ
 * Nginx
@@ -85,10 +85,6 @@ for Linux:
 ```
 g++ -O3 --fast-math -o EvoEF src/*.cpp
 ```
-for MacOS:
-```
-g++ -O3 -ffast-math -o EvoEF src/*.cpp
-```
 
 If you want to analyze your complex with FoldX, you need to move the FoldX executable script named `foldx` and the `rotabase.txt` file to the working directory.
 
@@ -110,18 +106,10 @@ To install RabbitMQ for Linux:
 ```
 sudo apt-get install rabbitmq-server
 ```
-for MacOS:
-```
-brew install rabbitmq
-```
 
 To initate it for Linux:
 ```
 sudo rabbitmq-server -detached
-```
-for MacOS:
-```
-brew services start rabbitmq
 ```
 
 Now, you should configure the RabbitMQ server settings to create a new user on host server and set permissions.
@@ -132,7 +120,6 @@ sudo rabbitmqctl add_user <username> <password>
 sudo rabbitmqctl add_vhost <hostname>
 sudo rabbitmqctl set_permissions -p <hostname> <username> ".*" ".*" ".*"
 ```
-For MacOS users follow [this](https://www.ge.com/digital/documentation/proficy-plant-applications/version81/t_gsg_configuring_user_in_RabbitMQ.html)
 
 #### Deployment of the Server with Nginx
 
@@ -145,16 +132,12 @@ Running Gunicorn in the background will work fine for your purposes here. Howeve
 
 Supervisor allows you to monitor and control multiple processes on UNIX-like operating systems. It will oversee the Gunicorn process, ensuring it restarts if something goes wrong or starts at boot time.
 
-To install supervisor for Linux:
+To install supervisor:
 ```
 sudo apt-get install supervisor
 ```
-for MacOS:
-```
-brew install supervisor
-```
 
-Then, create a Supervisor configuration file in `/etc/supervisor/conf.d/` (for MacOS: /opt/homebrew/etc/proton.conf) and configure it according to your requirements.
+Then, create a Supervisor configuration file in `/etc/supervisor/conf.d/` and configure it according to your requirements.
 
 ```
 [program:prot-on]
@@ -172,33 +155,6 @@ Run the following commands to enable the configuration.
 sudo supervisor reread
 sudo service supervisor restart
 ```
-for MacOS:
-
-Create a configuration file with:
-```
-sudo nano /opt/homebrew/etc/proton.conf
-```
-Then, type following into the file. Please firstly, create supervisord and prot-on folders into `/var/log/` 
-```
-[supervisord]
-logfile=/var/log/supervisord.log
-pidfile=/var/run/supervisord.pid
-childlogdir=/var/log/supervisord
-
-[program:prot-on]
-directory=/path/your/prot-on/directory
-command=/path/your/prot-on/environment/bin/gunicorn app:flask_app -b localhost:8000
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/prot-on/prot-on.err.log
-stdout_logfile=/var/log/prot-on/prot-on.out.log
-```
-
-Run the following commands to enable the configuration.
-
-```
-sudo supervisord -c /opt/homebrew/etc/prot-on.conf
-```
 
 **If you change/update anything on the server files/scripts, you must rerun below commands.** You can check the status of all monitored apps, use the following command
 
@@ -206,29 +162,18 @@ for Linux:
 ```
 sudo service supervisor restart
 ```
-for MacOS:
-```
-sudo supervisord -c /opt/homebrew/etc/prot-on.conf
-```
+
 After that, we need to deploy our service on a DNS or IP address. First of all, Nginx must be downloaded:
 
-To install nginx in linux:
+To install:
 ```
 sudo apt-get install nginx
-```
-For MacOS:
-```
-brew install nginx
 ```
 
 Now, a server block must be established for PROT-ON application
 For Linux:
 ```
 sudo vim /etc/nginx/conf.d/prot-on.conf
-```
-For MacOS:
-```
-sudo nano /opt/homebrew/etc/nginx/prot-on.conf
 ```
 
 Then, paste the following configuration
@@ -251,7 +196,6 @@ Restart the nginx web server.
 ```
 sudo nginx -t
 sudo service nginx restart
-sudo nginx -s reload (for restart on MacOS)
 ```
 
 #### To Run the PROT-ON Webserver

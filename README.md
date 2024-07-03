@@ -56,6 +56,7 @@ PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScr
 
 ### Python dependencies (also listed in requirements.txt)
 * flask
+* celery
 * plotly
 * python-dotenv
 * SQLAlchemy
@@ -136,7 +137,7 @@ To install supervisor:
 ```
 sudo apt-get install supervisor
 ```
-Then, create a Supervisor configuration file in `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory.
+Then, create a Supervisor configuration file (like proton.conf) in `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory.
 
 ```
 [program:prot-on]
@@ -151,18 +152,17 @@ stdout_logfile=/var/log/prot-on/prot-on.out.log
 Run the following commands to enable the configuration.
 
 ```
-sudo supervisor reread
+sudo supervisorctl reread
 sudo service supervisor restart
 ```
 
 **If you change/update anything on the server files/scripts, you must rerun below commands.** You can check the status of all monitored apps, use the following command
 
-for Linux:
 ```
 sudo service supervisor restart
 ```
 
-After that, we need to deploy our service on a DNS or IP address. First of all, Nginx must be downloaded:
+After that, we need to deploy our service on a domain or IP address. First of all, Nginx must be downloaded:
 
 To install:
 ```
@@ -170,9 +170,9 @@ sudo apt-get install nginx
 ```
 
 Now, a server block must be established for PROT-ON application
-For Linux:
+
 ```
-sudo vim /etc/nginx/conf.d/prot-on.conf
+sudo nano /etc/nginx/conf.d/prot-on.conf
 ```
 
 Then, paste the following configuration
@@ -180,13 +180,15 @@ Then, paste the following configuration
 ```
 server {
     listen       80;
-    server_name  your_public_dnsname_here_or_ip_address;
+    server_name  your_public_domain_here_or_ip_address;
 
     location / {
         proxy_pass http://127.0.0.1:8000;
     }
 }
 ```
+
+You must change `your_public_domain_here_or_ip_address;` with your domain name or IP address (you can check your local IP address via *ifconfig* command)
 
 The proxy pass directive should match the port on which the Gunicorn process is listening.
 
@@ -196,6 +198,8 @@ Restart the nginx web server.
 sudo nginx -t
 sudo service nginx restart
 ```
+
+To check whether you deployed the PROT-ON successfully or not, please type the domain name or IP address on your browser.
 
 ## Installation of Celery
 

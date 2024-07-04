@@ -23,8 +23,6 @@ check_error
 
 # Step 3: Install RabbitMQ
 echo "Installing RabbitMQ..."
-sudo apt-get update
-check_error
 sudo apt-get install -y rabbitmq-server
 check_error
 
@@ -124,10 +122,9 @@ ENV_FILE="$PROTON_DIR/.env"
 read -p "Enter your secret key: " SECRET_KEY
 
 echo "Creating .env file for Celery configuration..."
-tee $ENV_FILE > /dev/null <<EOL
-CELERY_BROKER_URL=amqp://$RABBITMQ_USER:$RABBITMQ_PASS@localhost/$RABBITMQ_VHOST
-CELERY_BACKEND_URL=db+sqlite:///proton.db
-SECRET_KEY="$SECRET_KEY"
-EOL
+echo "CELERY_BROKER_URL=amqp://$RABBITMQ_USER:$RABBITMQ_PASS@localhost/$RABBITMQ_VHOST" > $ENV_FILE
+echo "CELERY_BACKEND_URL=db+sqlite:///proton.db" >> $ENV_FILE
+echo "SECRET_KEY=\"$SECRET_KEY\"" >> $ENV_FILE
+
 
 echo "Setup complete. Please reboot the system to verify the installation and configuration."

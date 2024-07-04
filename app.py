@@ -24,6 +24,7 @@ import numpy as np
 
 load_dotenv()
 logger = get_task_logger(__name__)
+hostname = os.system("hostname -I") #or type your domain as a string 
 
 def make_celery(app):
     celery = Celery(
@@ -165,8 +166,8 @@ def proton(chain_1,chain_2,selected_chain,cut_off,iqr,algorithm,protein_structur
 def SendMail(email,name,run_id):
     msg = Message("PROT-ON Run Results", sender = "proton.tools@ibg.edu.tr", recipients=[email]) #Fill with your e-mail here
     msg.body = ("""
-    Thank you for using PROT-ON. Your {} run is now complete. You can access run results at http://proton.tools.ibg.edu.tr:8001/result/{}. Your result will be accessible for a week.
-    """.format(name,run_id))
+    Thank you for using PROT-ON. Your {} run is now complete. You can access run results at http://{}/result/{}. Your result will be accessible for a week.
+    """.format(hostname,name,run_id)) 
     if email != "":
         mail.send(msg)
     else:
@@ -380,7 +381,7 @@ def result():
                     shutil.copy(pssm, UPLOAD_FOLDER + run_id)
                 shutil.copy(protein_structure, UPLOAD_FOLDER + run_id)
                 task.task(chain_1,chain_2,selected_chain,cut_off,iqr,algorithm,protein_structure,pssm,run_id,email,name)
-                return redirect('http://proton.tools.ibg.edu.tr:8001/result/{}'.format(run_id))
+                return redirect('http://{}/result/{}'.format(hostname,run_id))
         elif pdb_id != "":
             protein_structure = pdb_id + ".pdb"
             url = downloadurl + protein_structure
@@ -398,7 +399,7 @@ def result():
                     shutil.copy(pssm, UPLOAD_FOLDER + run_id)
                 shutil.copy(protein_structure, UPLOAD_FOLDER + run_id)
                 task.task(chain_1,chain_2,selected_chain,cut_off,iqr,algorithm,protein_structure,pssm,run_id,email,name)
-                return redirect('http://proton.tools.ibg.edu.tr:8001/result/{}'.format(run_id))
+                return redirect('http://{}/result/{}'.format(hostname,run_id))
                 
     return render_template("index.html", chain_1=chain_1,chain_2=chain_2,selected_chain=selected_chain,cut_off=cut_off,iqr=iqr,algorithm=algorithm,protein_structure=protein_structure,pssm=pssm,run_id=run_id,email=email,name=name)
 

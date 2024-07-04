@@ -76,7 +76,11 @@ git clone https://github.com/mehdikosaca/prot-on_web.git
 cd prot-on_web
 ```
 
-Before the install dependencies, you must change returning result address by editing the all `proton.tools.ibg.edu.tr:8001`sections in the `app.py` with your domain or IP. You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
+PROT-ON will deploy to your IP address after completing these instructions. If you prefer to deploy it on a specific domain, please enter your domain as a string in the `hostname` variable within `app.py` (PROT-ON's default domain is proton.tools.ibg.edu.tr:8001). You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
+
+### Quick Installation
+
+You can run quick installation script (`setup_prot-on.sh`) for setting up the PROT-ON web server. By running the provided script, you can automate the setup process, including the installation of dependencies and configuration of services. Or follow the below instructions step by step:
 
 #### EvoEF1 and FoldX Installation
 
@@ -123,7 +127,7 @@ sudo rabbitmqctl set_permissions -p <hostname> <username> ".*" ".*" ".*"
 
 #### Deployment of the Server with Nginx
 
-Firstly, Gunicorn configuration is needed. Gunicorn is used to process to serve PROT-ON's Flask app (PROT-ON listen 8001th port as a default).
+Firstly, Gunicorn configuration is needed. Gunicorn is used to deploy the PROT-ON's Flask app on your localhost (PROT-ON listen 8001th port as a default).
 ```
 gunicorn app:flask_app -b localhost:8000 &
 ```
@@ -231,8 +235,8 @@ SECRET_KEY="YOUR_SECRET_KEY"
 The last step, you must open two terminal tabs on PROT-ON working directory, and run following commands to initate background and scheduled tasks (You must run these commands at out of the environment), respectively. Note that, if any change or bugs occured in the scripts, please rerun them together with supervisor command below.
 
 ```
-sudo celery -A app.celery worker --loglevel==info
-sudo celery -A app.celery beat --loglevel == info
+sudo celery -A app.celery worker --loglevel=info
+sudo celery -A app.celery beat --loglevel=info
 ```
 
 **If you encounter an internal error when you submit a run, you must reboot your system and run below commands again.**
@@ -280,6 +284,12 @@ This section includes valuable information for future updates of PROT-ON codes. 
 * **To edit statistical methods:** You can directly manipulate the `detect_outliers.py` script if any edits are necessary in the statistical analysis methods.
 
 * **Other HTML pages:** `Layouts.html` file serves as a layout page and is inherited by many other HTML pages. The `pre_calculated_runs.html` file includes information about pre-calculated runs. The files`404.html, about.html, help.html, refresh.html` are static pages. These pages are returned for specific purposes: **404.html** for page not found errors, **about.html** for information about algorithm, **help.html** for some usage instructions, and **refresh.html** for waiting the results. There are also some html pages under *includes* folder. The **footer.html** is used for the footer section of pages, the **messages.html** is used for flash messaging, and the **navbar.html** is used for accessing the navigation menu.
+
+You can refer to the accompanying flowchart that outlines these instructions below.
+
+<p align="center">
+<img align="center" src="static/PROT-ON_flowchart.png" alt="proton_code_architecture" width = "750" />
+</p>
 
 ### Citation
 

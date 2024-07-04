@@ -7,8 +7,11 @@ check_error() {
         exit 1
     fi
 }
+# Step 1: Create EvoEF executable file
+echo "EvoEF executable file is creating..."
+g++ -O3 --fast-math -o EvoEF src/*.cpp
 
-# Step 1: Create a virtual environment and install dependencies
+# Step 2: Create a virtual environment and install dependencies
 echo "Creating virtual environment and installing dependencies..."
 read -p "Enter the name of the virtual environment: " VENV_NAME
 python3 -m venv $VENV_NAME
@@ -18,19 +21,19 @@ check_error
 pip install -r requirements.txt
 check_error
 
-# Step 2: Install RabbitMQ
+# Step 3: Install RabbitMQ
 echo "Installing RabbitMQ..."
 sudo apt-get update
 check_error
 sudo apt-get install -y rabbitmq-server
 check_error
 
-# Step 3: Start RabbitMQ server
+# Step 4: Start RabbitMQ server
 echo "Starting RabbitMQ server..."
 sudo rabbitmq-server -detached
 check_error
 
-# Step 4: Configure RabbitMQ
+# Step 5: Configure RabbitMQ
 read -p "Enter RabbitMQ username: " RABBITMQ_USER
 read -p "Enter RabbitMQ password: " RABBITMQ_PASS
 read -p "Enter RabbitMQ virtual host: " RABBITMQ_VHOST
@@ -43,12 +46,12 @@ check_error
 sudo rabbitmqctl set_permissions -p $RABBITMQ_VHOST $RABBITMQ_USER ".*" ".*" ".*"
 check_error
 
-# Step 5: Install Supervisor
+# Step 6: Install Supervisor
 echo "Installing Supervisor..."
 sudo apt-get install -y supervisor
 check_error
 
-# Step 6: Create Supervisor configuration file
+# Step 7: Create Supervisor configuration file
 SUPERVISOR_CONF="/etc/supervisor/conf.d/proton.conf"
 read -p "Enter the path to your PROT-ON directory: " PROTON_DIR
 read -p "Enter the path to your virtual environment: " VENV_DIR
@@ -67,19 +70,19 @@ stderr_logfile=/var/log/prot-on/prot-on.err.log
 stdout_logfile=/var/log/prot-on/prot-on.out.log
 EOL
 
-# Step 7: Enable Supervisor configuration
+# Step 8: Enable Supervisor configuration
 echo "Enabling Supervisor configuration..."
 sudo supervisorctl reread
 check_error
 sudo service supervisor restart
 check_error
 
-# Step 8: Install Nginx
+# Step 9: Install Nginx
 echo "Installing Nginx..."
 sudo apt-get install -y nginx
 check_error
 
-# Step 9: Configure Nginx
+# Step 10: Configure Nginx
 NGINX_CONF="/etc/nginx/conf.d/prot-on.conf"
 read -p "Enter your public domain or IP address: " DOMAIN_OR_IP
 
@@ -95,7 +98,7 @@ server {
 }
 EOL
 
-# Step 10: Restart Nginx
+# Step 11: Restart Nginx
 echo "Restarting Nginx..."
 sudo nginx -t
 check_error
@@ -106,17 +109,17 @@ check_error
 echo "Deactivating the virtual environment..."
 deactivate
 
-# Step 11: Install Celery
+# Step 12: Install Celery
 echo "Installing Celery..."
 sudo apt-get install -y celery
 check_error
 
-# Step 12: Install Python dependencies with elevated privileges
+# Step 13: Install Python dependencies with elevated privileges
 echo "Installing Python dependencies with elevated privileges..."
 sudo -H pip3 install pandas flask python-dotenv plotly flask-mail sqlalchemy kaleido numpy
 check_error
 
-# Step 13: Create .env file for Celery configuration
+# Step 14: Create .env file for Celery configuration
 ENV_FILE="$PROTON_DIR/.env"
 read -p "Enter your secret key: " SECRET_KEY
 

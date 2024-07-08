@@ -126,5 +126,8 @@ echo "CELERY_BROKER_URL=amqp://$RABBITMQ_USER:$RABBITMQ_PASS@localhost/$RABBITMQ
 echo "CELERY_BACKEND_URL=db+sqlite:///proton.db" >> $ENV_FILE
 echo "SECRET_KEY=\"$SECRET_KEY\"" >> $ENV_FILE
 
+# Update app.py with the provided IP address
+APP_PY="$PROTON_DIR/app.py"
+sed -i "s/hostname = .*/hostname = '$DOMAIN_OR_IP'/" $APP_PY
 
 echo "Setup complete. Please reboot the system to verify the installation and configuration."

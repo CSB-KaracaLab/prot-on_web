@@ -24,7 +24,7 @@ import numpy as np
 
 load_dotenv()
 logger = get_task_logger(__name__)
-hostname = os.system("hostname -I") #or type your domain as a string 
+hostname = "hostname" #or type your domain as a string 
 
 def make_celery(app):
     celery = Celery(

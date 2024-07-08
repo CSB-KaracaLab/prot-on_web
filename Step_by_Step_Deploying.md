@@ -3,6 +3,7 @@
 PROT-ON will deploy to your IP address after completing these instructions. If you prefer to deploy it on a specific domain/IP, please enter your domain/IP as a string in the `hostname` variable within `app.py` (PROT-ON's default domain is proton.tools.ibg.edu.tr:8001). You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
 
 If you want to deploy the server step by step, without using quick installation, please aplly followings.
+
 #### EvoEF1 and FoldX Installation
 
 `library` and `src` folders are necessary to obtain EvoEF executable file. Please do not change or delete any files in those folders. Firstly, run the following command to create EvoEF executable file.
@@ -38,7 +39,7 @@ To initate it:
 sudo rabbitmq-server -detached
 ```
 
-Now, you should configure the RabbitMQ server settings to create a new user on host server and set permissions.
+Now, you must configure the RabbitMQ server settings to create a new user on host server and set permissions.
 
 ```
 sudo rabbitmqctl add_user <username> <password>
@@ -48,7 +49,7 @@ sudo rabbitmqctl set_permissions -p <hostname> <username> ".*" ".*" ".*"
 
 #### Deployment of the Server with Nginx
 
-Firstly, Gunicorn configuration is needed. Gunicorn is used to deploy the PROT-ON's Flask app on your localhost (PROT-ON listen 8001th port as a default).
+Gunicorn is used to deploy the PROT-ON's Flask app on your localhost (PROT-ON listen 8001th port as a default).
 ```
 gunicorn app:flask_app -b localhost:8000 &
 ```
@@ -60,7 +61,7 @@ To install supervisor:
 ```
 sudo apt-get install supervisor
 ```
-Then, create a Supervisor configuration file (like proton.conf) at `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must create `prot-on` folder under `/var/log` directory (PROT-ON listen 8001th port as a default).
+Then, create a Supervisor configuration file (like proton.conf) under `/etc/supervisor/conf.d/` and configure it according to your requirements Before configuration, you must also create `prot-on` folder under `/var/log` directory (PROT-ON listen 8001th port as a default).
 
 ```
 [program:prot-on]

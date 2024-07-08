@@ -16,7 +16,7 @@ PROT-ON's aim is to identify key protein-protein interaction (PPI) mutations tha
 #### Code Architecture
 
 The PROT-ON tool is designed with a modular architecture that includes the following components:
-1. **Interface Analysis**: Identifying amino acids on the protein surface that interact with its partner (`interface_residues.py`).
+1. **Interface Analysis**: Identifying interfacial amino acids.  (`interface_residues.py`).
 2. **Mutation Modeling**: Using EvoEF1 and FoldX to generate mutants and calculate binding energies  (`energy_calculation_[EvoEF/FoldX].py`).
 3. **Statistical Analysis**: Classifying the mutations based on their impact on binding energy  (`detect_outliers.py`).
 
@@ -26,11 +26,11 @@ The PROT-ON tool is designed with a modular architecture that includes the follo
 
 #### Webserver Architecture
 
-PROT-ON web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScript, Celery, RabbitMQ, SQLAlchemy, Nginx, Gunicorn, and Supervisor packages and services. The purposes of using these packages and services are provided below.
+PROT-ON's web application was developed using Flask, Bootstrap, HTTP, CSS, JavaScript, Celery, RabbitMQ, SQLAlchemy, Nginx, Gunicorn, and Supervisor packages and services. The purposes of using these packages and services are provided below.
 
 1. **Frontend**: HTML, CSS, and JavaScript, Bootstrap for the user interface.
 2. **Backend**: Python scripts and [Flask](https://flask.palletsprojects.com/en/3.0.x/) for handling requests and running the mutation analysis.
-3. **Database**: Storing result data with SQLAlchemy.
+3. **Database**: Storing data with SQLAlchemy.
 4. **Task Queue**: Using [RabbitMQ](https://www.rabbitmq.com/tutorials/tutorial-one-python) and [Celery](https://docs.celeryq.dev/en/stable/) for managing background tasks.
 5. **Server**: Deploying the webserver with [Nginx](https://nginx.org/en/docs/), supervisor and gunicorn.
 
@@ -76,22 +76,21 @@ git clone https://github.com/mehdikosaca/prot-on_web.git
 cd prot-on_web
 ```
 
-PROT-ON will deploy to your IP address after completing these instructions. If you prefer to deploy it on a specific domain, please enter your domain as a string in the `hostname` variable within `app.py` (PROT-ON's default domain is proton.tools.ibg.edu.tr:8001). You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
+PROT-ON will deploy to your IP/domain address after completing these instructions. If you prefer to deploy it on a specific domain, please enter your domain as a string in the `hostname` variable within `app.py` (PROT-ON's default domain is proton.tools.ibg.edu.tr:8001). You can also change the e-mail address to which the results are sent. For this, Please press `command/ctrl + f`, type `Fill with your e-mail here`, and edit with your e-mail in `app.py` script. Also if needed, you must change `MAIL_PORT`. 
 
 ### Quick Installation
 
-You can run quick installation script (`setup_prot-on.sh`) for setting up the PROT-ON web server. By running the provided script, you can automate the setup process, including the installation of dependencies and configuration of services. Or follow the below instructions [step by step](/Step_by_Step_Deploying.md):
+You can run the script (`setup_prot-on.sh`) for quick deploying the PROT-ON web server. Or you can follow [instuctions](/Step_by_Step_Deploying.md) to deploy the server step by step.
 
 #### To Run the PROT-ON Webserver
 
-Initiate two terminal tabs on PROT-ON working directory, and run following commands to start background and scheduled tasks (You must run these commands at out of the environment), respectively. Note that, if any change or bugs occured in the scripts, please rerun them together with supervisor command below.
+Initiate two terminal tabs on PROT-ON working directory, and run following commands to start background and scheduled tasks, respectively (You must run these commands at out of the environment). Note that, if any change or bugs occured in the scripts, please rerun these and supervisor command below.
 
 ```
 sudo celery -A app.celery worker --loglevel=info
 sudo celery -A app.celery beat --loglevel=info
 ```
-
-**If you encounter an internal error when you submit a run, you must reboot your system and run above and below commands again.**
+and
 
 ```
 sudo service supervisor restart
@@ -133,7 +132,7 @@ This section includes valuable information for future updates of PROT-ON codes. 
 
 * **To edit pre-calculated run results:** If you want to edit pre-calculated run results, you can add or drop folders in the **periodic_task** function in **app.py** script.
 
-* **To edit result page:** You can manipulate the `ResultPage` function in the *app.py* and `result.html` script to change the result page template. 
+* **To edit result page:** You can manipulate the `ResultPage` function in the *app.py* and `result.html` script to edit the result page template. 
 
 * **To edit homepage** You can manipulate the `index.html` script to change the homepage template. Additionally, you can edit the `result` function in the `app.py` script if any changes occur in the index form.
 

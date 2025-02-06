@@ -2,7 +2,7 @@
   <img width="250" height="150" src="static/logo.png">
 </p>
 
-[![DOI:10.3389/fmolb.2023.1063971](http://img.shields.io/badge/DOI-10.1021/acsomega.0c04672-B31B1B.svg)](https://doi.org/10.3389/fmolb.2023.1063971)
+[![DOI:10.3389/fmolb.2023.1063971](http://img.shields.io/badge/DOI-10.3389/fmolb.2023.1063971-B31B1B.svg)](https://doi.org/10.3389/fmolb.2023.1063971)
 
 
 ### PROT-ON: A Structure-Based Detection of Designer PROTein Interface MutatiONs

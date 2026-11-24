@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+Untitled*.ipynb
+
+# python
+__pycache__/
+*.py[cod]
+
+# editor leftovers
+*.swp
+*.swo
+*~
